@@ -57,29 +57,26 @@ pipeline {
         }
 
         // Deploy to Netlify
-        stage('Install Puppeteer and Chromium') {
-    agent {
-        docker {
-            image 'node:18-alpine'
-            reuseNode true
-        }
-    }
-    steps {
-        script {
-            echo "📦 Installing Chromium and Puppeteer..."
-            sh '''
-            apk update
-            apk add --no-cache chromium
-            npm install puppeteer
-            node -e "const puppeteer = require('puppeteer'); (async () => { const browser = await puppeteer.launch(); const page = await browser.newPage(); await page.goto('https://nicevanitermproject.netlify.app'); await page.screenshot({path: 'screenshot.png'}); await browser.close(); })();"
-            '''
-        }
-    }
-
-
+        stage('Deploy to Netlify') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                script {
+                    echo "🚀 Deploying to Netlify..."
+                    sh '''
+                    npx netlify deploy --prod --dir=build \
+                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                    '''
+                }
+            }
             post {
                 success {
                     echo "✅ Deployment Successful! 🎉"
+                    echo "👉 เปิดเว็บไซต์ที่: https://nicevanitermproject.netlify.app"
                 }
                 failure {
                     echo "❌ Deployment Failed! Check logs for details."
