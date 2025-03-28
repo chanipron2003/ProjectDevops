@@ -76,7 +76,10 @@ pipeline {
             post {
                 success {
                     echo "✅ Deployment Successful! 🎉"
-                    echo "👉 เปิดเว็บไซต์ที่: https://nicevanitermproject.netlify.app"
+                    sh '''
+                    npm install puppeteer
+                    node -e "const puppeteer = require('puppeteer'); (async () => { const browser = await puppeteer.launch(); const page = await browser.newPage(); await page.goto('https://nicevanitermproject.netlify.app'); await page.screenshot({path: 'screenshot.png'}); await browser.close(); })();"
+                    '''
                 }
                 failure {
                     echo "❌ Deployment Failed! Check logs for details."
