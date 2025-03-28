@@ -70,37 +70,38 @@ pipeline {
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
       stage('Post Deploy') {
-    agent any
-    steps {
-        script {
-            echo "🔍 Monitoring server resources during the test..."
-            
-            // Run resource monitoring commands
-            try {
-                sh '''
-                    # Monitoring top 10 processes by memory usage
-                    echo "Top 10 processes by memory usage:"
-                    ps aux --sort=-%mem | head -n 10
-                    
-                    # Memory usage
-                    echo "Memory usage:"
-                    free -h
-                    
-                    # System performance
-                    echo "System performance stats (vmstat):"
-                    vmstat 1 5
-                    
-                    # CPU usage (sar requires sysstat to be installed)
-                    echo "CPU usage (sar):"
-                    sar -u 1 5 || echo "sar command not available on this system."
-                '''
-            } catch (e) {
-                echo "Error monitoring server resources: ${e}"
+        agent any
+            steps {
+                script {
+                    echo "🔍 Monitoring server resources during the test..."
+                
+                    // Run resource monitoring commands
+                    try {
+                        sh '''
+                            # Monitoring top 10 processes by memory usage
+                            echo "Top 10 processes by memory usage:"
+                            ps aux --sort=-%mem | head -n 10
+                            
+                            # Memory usage
+                            echo "Memory usage:"
+                            free -h
+                            
+                            # System performance
+                            echo "System performance stats (vmstat):"
+                            vmstat 1 5
+                            
+                            # CPU usage (sar requires sysstat to be installed)
+                            echo "CPU usage (sar):"
+                            sar -u 1 5 || echo "sar command not available on this system."
+                        '''
+                } 
+                    catch (e) {
+                        echo "Error monitoring server resources: ${e}"
+                }
             }
         }
     }
-}
 
-    }
+}
 
 }
