@@ -66,7 +66,11 @@ pipeline {
     steps {
         script {
             echo "🔍 Monitoring server resources during the test..."
-            sh 'top -n 1'
+            sh '''ps aux --sort=-%mem | head -n 10
+                free -h
+                vmstat 1 5
+                sar -u 1 5
+            '''
         }
     }
 }
