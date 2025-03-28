@@ -75,7 +75,7 @@ pipeline {
                 script {
                     echo "🚀 Deploying to Netlify..."
                     sh '''
-                    npx netlify deploy --prod --dir=dist \
+                    npx netlify deploy --prod --dir=build \
                     --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
                 }
