@@ -60,7 +60,7 @@ pipeline {
         }
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
-        stage('Post Deploy') {
+       stage('Post Deploy') {
     agent {
         docker {
             image 'node:lts'
@@ -69,10 +69,9 @@ pipeline {
     }
     steps {
         script {
-            echo "⚡ Running Lighthouse CI..."
+            echo "⚡ Running Lighthouse CI with NPX..."
             sh '''
-            npm install -g @lhci/cli
-            lhci autorun --collect.url=https://nicevanitermproject.netlify.app/
+            npx @lhci/cli autorun --collect.url=https://nicevanitermproject.netlify.app/
             '''
         }
     }
