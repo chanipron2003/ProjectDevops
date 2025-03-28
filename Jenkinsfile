@@ -60,7 +60,7 @@ pipeline {
         }
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
-stage('Post Deploy') {
+        stage('Post Deploy') {
     agent {
         docker {
             image 'node:lts'
@@ -78,6 +78,7 @@ stage('Post Deploy') {
     }
 }
 
+    }
 
     post {
         success {
@@ -87,5 +88,4 @@ stage('Post Deploy') {
             echo "❌ Deployment Failed! Check logs for details."
         }
     }
-}
 }
