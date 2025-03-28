@@ -32,66 +32,66 @@ pipeline {
             }
         }
 
-        // Run tests (if applicable)
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
+        // Run tests and deploy in parallel
+        stage('Test and Deploy') {
+            parallel {
+                stage('Test') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        script {
+                            echo "🔬 Running tests..."
+                            sh 'npm test'
+                        }
+                    }
+                    post {
+                        success {
+                            echo "✅ Test Successful! 🎉"
+                        }
+                        failure {
+                            echo "❌ Test Failed! Check logs for details."
+                        }
+                    }
                 }
-            }
-            steps {
-                script {
-                    echo "🔬 Running tests..."
-                    sh 'npm test'  // ปรับคำสั่งให้เป็นคำสั่งที่ใช้ทดสอบโปรเจคของคุณ
-                }
-            }
-            post {
-                success {
-                    echo "✅ Test Successful! 🎉"
-                }
-                failure {
-                    echo "❌ Test Failed! Check logs for details."
+
+                stage('Deploy to Netlify') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        script {
+                            echo "🚀 Deploying to Netlify..."
+                            sh '''
+                            npx netlify deploy --prod --dir=build \
+                            --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                            '''
+                        }
+                    }
+                    post {
+                        success {
+                            echo "✅ Deployment Successful! 🎉"
+                        }
+                        failure {
+                            echo "❌ Deployment Failed! Check logs for details."
+                        }
+                    }
                 }
             }
         }
 
-        // Deploy to Netlify
-        stage('Deploy to Netlify') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                script {
-                    echo "🚀 Deploying to Netlify..."
-                    sh '''
-                    npx netlify deploy --prod --dir=build \
-                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-                    '''
-                }
-            }
-            post {
-                success {
-                    echo "✅ Deployment Successful! 🎉"
-                    echo "👉 เปิดเว็บไซต์ที่: https://nicevanitermproject.netlify.app"
-                }
-                failure {
-                    echo "❌ Deployment Failed! Check logs for details."
-                }
-            }
-        }
-
-        // Post deploy actions, e.g., notify Slack, send emails, etc.
         stage('Post Deploy') {
             agent any
             steps {
                 script {
                     echo "🔍 Monitoring server resources during the test..."
             
-                    // Run resource monitoring commands and save output
                     try {
                         sh '''
                             echo "Top 10 processes by memory usage:" > resource_report.txt
@@ -111,7 +111,7 @@ pipeline {
             post {
                 success {
                     echo "✅ Resource monitoring completed successfully! Here are the results:"
-                    sh 'cat resource_report.txt'  // แสดงข้อมูลที่บันทึกไว้
+                    sh 'cat resource_report.txt'
                 }
                 failure {
                     echo "❌ Resource monitoring encountered an error!"
@@ -119,5 +119,4 @@ pipeline {
             }
         }
     }
-
 }
