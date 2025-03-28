@@ -58,6 +58,14 @@ pipeline {
                     '''
                 }
             }
+             post {
+        success {
+            echo "✅ Deployment Successful! 🎉"
+        }
+        failure {
+            echo "❌ Deployment Failed! Check logs for details."
+        }
+    }
         }
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
@@ -95,12 +103,4 @@ pipeline {
 
     }
 
-    // post {
-    //     success {
-    //         echo "✅ Deployment Successful! 🎉"
-    //     }
-    //     failure {
-    //         echo "❌ Deployment Failed! Check logs for details."
-    //     }
-    // }
 }
