@@ -61,6 +61,12 @@ pipeline {
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
         stage('Post Deploy') {
+             agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
              steps {
                 script {
                     echo "⚡ Running Lighthouse Audit..."
