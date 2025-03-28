@@ -76,7 +76,7 @@ pipeline {
             post {
                 success {
                     echo "✅ Deployment Successful! 🎉"
-                     sh 'xdg-open https://nicevanitermproject.netlify.app || open https://nicevanitermproject.netlify.app'
+                    bat 'start https://nicevanitermproject.netlify.app'
                 }
                 failure {
                     echo "❌ Deployment Failed! Check logs for details."
