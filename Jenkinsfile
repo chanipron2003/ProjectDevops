@@ -45,6 +45,7 @@ pipeline {
             agent {
                 docker {
                     image 'node:18-alpine'
+                    args '--user root --cap-add=SYS_ADMIN'
                     reuseNode true
                 }
             }
