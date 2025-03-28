@@ -63,7 +63,7 @@ pipeline {
         stage('Post Deploy') {
              agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'femtopixel/google-lighthouse'
                     reuseNode true
                 }
             }
