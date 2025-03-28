@@ -1,8 +1,10 @@
 Started by user Vanichaya Pansa-ard
+
 Obtained Jenkinsfile from git https://github.com/NiceVani/TermProjectDevOps
 [Pipeline] Start of Pipeline
 [Pipeline] node
-Running on Jenkins in /var/jenkins_home/workspace/TermProjectDevOps
+Running on Jenkins
+ in /var/jenkins_home/workspace/TermProjectDevOps
 [Pipeline] {
 [Pipeline] stage
 [Pipeline] { (Declarative: Checkout SCM)
@@ -18,11 +20,11 @@ Fetching upstream changes from https://github.com/NiceVani/TermProjectDevOps
  > git --version # 'git version 2.39.5'
  > git fetch --tags --force --progress -- https://github.com/NiceVani/TermProjectDevOps +refs/heads/*:refs/remotes/origin/* # timeout=10
  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-Checking out Revision 0c9043a561dc793f56c2a8cf0b9bcb0b7620f7a4 (refs/remotes/origin/main)
+Checking out Revision bf6abeb119afa1095fb059a5024dedd607277b58 (refs/remotes/origin/main)
  > git config core.sparsecheckout # timeout=10
- > git checkout -f 0c9043a561dc793f56c2a8cf0b9bcb0b7620f7a4 # timeout=10
-Commit message: "update delete"
- > git rev-list --no-walk a6d04454de58e51bd72fcb8d128141aa6779de11 # timeout=10
+ > git checkout -f bf6abeb119afa1095fb059a5024dedd607277b58 # timeout=10
+Commit message: "change update"
+ > git rev-list --no-walk c09e0f5996fef125b8caf85cfe712732b3eb1a37 # timeout=10
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] withEnv
@@ -46,7 +48,7 @@ Jenkins seems to be running inside container 2f739881d900880196660db3e9780350d47
 but /var/jenkins_home/workspace/TermProjectDevOps could not be found among []
 but /var/jenkins_home/workspace/TermProjectDevOps@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/TermProjectDevOps -v /var/jenkins_home/workspace/TermProjectDevOps:/var/jenkins_home/workspace/TermProjectDevOps:rw,z -v /var/jenkins_home/workspace/TermProjectDevOps@tmp:/var/jenkins_home/workspace/TermProjectDevOps@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top ed757aad5d4fdc57bd8cd39a871b4546ac32a4230608fa06843b0d2bbbda38be -eo pid,comm
+$ docker top 09f51ef0fca00a08303d896db638a38a50d3c9bd8a882242eaca4ac9e37066c8 -eo pid,comm
 [Pipeline] {
 [Pipeline] script
 [Pipeline] {
@@ -55,7 +57,7 @@ $ docker top ed757aad5d4fdc57bd8cd39a871b4546ac32a4230608fa06843b0d2bbbda38be -e
 [Pipeline] sh
 + npm install
 
-changed 1 package, and audited 3081 packages in 13s
+changed 1 package, and audited 3081 packages in 23s
 
 455 packages are looking for funding
   run `npm fund` for details
@@ -93,9 +95,12 @@ Find out more about deployment here:
 
 [Pipeline] }
 [Pipeline] // script
+Post stage
+[Pipeline] echo
+✅ Build Successful! 🎉
 [Pipeline] }
-$ docker stop --time=1 ed757aad5d4fdc57bd8cd39a871b4546ac32a4230608fa06843b0d2bbbda38be
-$ docker rm -f --volumes ed757aad5d4fdc57bd8cd39a871b4546ac32a4230608fa06843b0d2bbbda38be
+$ docker stop --time=1 09f51ef0fca00a08303d896db638a38a50d3c9bd8a882242eaca4ac9e37066c8
+$ docker rm -f --volumes 09f51ef0fca00a08303d896db638a38a50d3c9bd8a882242eaca4ac9e37066c8
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
@@ -115,7 +120,7 @@ Jenkins seems to be running inside container 2f739881d900880196660db3e9780350d47
 but /var/jenkins_home/workspace/TermProjectDevOps could not be found among []
 but /var/jenkins_home/workspace/TermProjectDevOps@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/TermProjectDevOps -v /var/jenkins_home/workspace/TermProjectDevOps:/var/jenkins_home/workspace/TermProjectDevOps:rw,z -v /var/jenkins_home/workspace/TermProjectDevOps@tmp:/var/jenkins_home/workspace/TermProjectDevOps@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top 827d8b43ee6e097aa920767d6b426e586151bd62610e6a0258e64e0b13d9aba2 -eo pid,comm
+$ docker top 9f2f425b6a6ad21729d4b6d9dfe2ddfc60df317cec4295b242853aaf7d29a213 -eo pid,comm
 [Pipeline] {
 [Pipeline] script
 [Pipeline] {
@@ -128,18 +133,21 @@ $ docker top 827d8b43ee6e097aa920767d6b426e586151bd62610e6a0258e64e0b13d9aba2 -e
 > jest
 
 PASS src/App.test.js
-  ✓ renders welcome message (31 ms)
+  ✓ renders welcome message (28 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
-Time:        1.416 s
+Time:        1.303 s
 Ran all test suites.
 [Pipeline] }
 [Pipeline] // script
+Post stage
+[Pipeline] echo
+✅ Test Successful! 🎉
 [Pipeline] }
-$ docker stop --time=1 827d8b43ee6e097aa920767d6b426e586151bd62610e6a0258e64e0b13d9aba2
-$ docker rm -f --volumes 827d8b43ee6e097aa920767d6b426e586151bd62610e6a0258e64e0b13d9aba2
+$ docker stop --time=1 9f2f425b6a6ad21729d4b6d9dfe2ddfc60df317cec4295b242853aaf7d29a213
+$ docker rm -f --volumes 9f2f425b6a6ad21729d4b6d9dfe2ddfc60df317cec4295b242853aaf7d29a213
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
@@ -159,7 +167,7 @@ Jenkins seems to be running inside container 2f739881d900880196660db3e9780350d47
 but /var/jenkins_home/workspace/TermProjectDevOps could not be found among []
 but /var/jenkins_home/workspace/TermProjectDevOps@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/TermProjectDevOps -v /var/jenkins_home/workspace/TermProjectDevOps:/var/jenkins_home/workspace/TermProjectDevOps:rw,z -v /var/jenkins_home/workspace/TermProjectDevOps@tmp:/var/jenkins_home/workspace/TermProjectDevOps@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top be078646cce465a507f39c01a42a885a48ba48d6f5e2570f538f41e94f6c47b7 -eo pid,comm
+$ docker top a264287ccd08a22d8f7d8d9d1c661cac766376243f8d62ba1818b8d3f3bc4700 -eo pid,comm
 [Pipeline] {
 [Pipeline] script
 [Pipeline] {
@@ -181,7 +189,7 @@ Netlify Build
 ​
 ❯ Flags
   auth: ****
-  deployId: 67e679831bfe4b5be5282cb3
+  deployId: 67e6c2c23c0e2e4e22fd1643
   dir: build
   open: false
   prod: true
@@ -209,33 +217,98 @@ Netlify Build
 [33m⠋[39m Waiting for deploy to go live...
 [33m⠙[39m Deploy is live!
 
-Build logs:         https://app.netlify.com/sites/nicevanitermproject/deploys/67e679831bfe4b5be5282cb3
+Build logs:         https://app.netlify.com/sites/nicevanitermproject/deploys/67e6c2c23c0e2e4e22fd1643
 Function logs:      https://app.netlify.com/sites/nicevanitermproject/logs/functions
 Edge function Logs: https://app.netlify.com/sites/nicevanitermproject/logs/edge-functions
-Unique deploy URL:  https://67e679831bfe4b5be5282cb3--nicevanitermproject.netlify.app
+Unique deploy URL:  https://67e6c2c23c0e2e4e22fd1643--nicevanitermproject.netlify.app
 Website URL:        https://nicevanitermproject.netlify.app
 [Pipeline] }
 [Pipeline] // script
+Post stage
+[Pipeline] echo
+✅ Deployment Successful! 🎉
+[Pipeline] echo
+👉 เปิดเว็บไซต์ที่: https://nicevanitermproject.netlify.app
 [Pipeline] }
-$ docker stop --time=1 be078646cce465a507f39c01a42a885a48ba48d6f5e2570f538f41e94f6c47b7
-$ docker rm -f --volumes be078646cce465a507f39c01a42a885a48ba48d6f5e2570f538f41e94f6c47b7
+$ docker stop --time=1 a264287ccd08a22d8f7d8d9d1c661cac766376243f8d62ba1818b8d3f3bc4700
+$ docker rm -f --volumes a264287ccd08a22d8f7d8d9d1c661cac766376243f8d62ba1818b8d3f3bc4700
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Post Deploy)
+[Pipeline] node
+Running on Jenkins
+ in /var/jenkins_home/workspace/TermProjectDevOps@2
+[Pipeline] {
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/TermProjectDevOps@2/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/NiceVani/TermProjectDevOps # timeout=10
+Fetching upstream changes from https://github.com/NiceVani/TermProjectDevOps
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/NiceVani/TermProjectDevOps +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision bf6abeb119afa1095fb059a5024dedd607277b58 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f bf6abeb119afa1095fb059a5024dedd607277b58 # timeout=10
+Commit message: "change update"
+[Pipeline] withEnv
+[Pipeline] {
 [Pipeline] script
 [Pipeline] {
 [Pipeline] echo
-📝 Post deploy actions
+🔍 Monitoring server resources during the test...
+[Pipeline] sh
++ echo Top 10 processes by memory usage:
++ ps aux --sort=-%mem
++ head -n 10
++ echo 
+Memory usage:
++ free -h
++ echo 
+System performance stats (vmstat):
++ vmstat 1 5
 [Pipeline] }
 [Pipeline] // script
-[Pipeline] }
-[Pipeline] // stage
-[Pipeline] stage
-[Pipeline] { (Declarative: Post Actions)
+Post stage
 [Pipeline] echo
-✅ Deployment Successful! 🎉
+✅ Resource monitoring completed successfully! Here are the results:
+[Pipeline] sh
++ cat resource_report.txt
+Top 10 processes by memory usage:
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+jenkins      8  1.4 15.0 9914676 1168384 ?     Sl   08:12   6:32 java -Duser.home=/var/jenkins_home -Djenkins.model.Jenkins.slaveAgentPort=50000 -Dhudson.lifecycle=hudson.lifecycle.ExitLifecycle -jar /usr/share/jenkins/jenkins.war
+jenkins  29707  0.0  0.0   8484  4072 ?        R    15:39   0:00 ps aux --sort=-%mem
+jenkins    580  0.0  0.0   4608  3728 pts/0    Ss+  08:52   0:00 /bin/bash
+jenkins  29706  0.0  0.0   2904   908 ?        S    15:39   0:00 sleep 3
+jenkins      1  0.0  0.0   2472   904 ?        Ss   08:12   0:00 /usr/bin/tini -- /usr/local/bin/jenkins.sh
+jenkins  29704  0.0  0.0   2576   892 ?        S    15:39   0:00 sh -xe /var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh.copy
+jenkins  29708  0.0  0.0   2912   884 ?        S    15:39   0:00 head -n 10
+jenkins  29701  0.0  0.0   2576   112 ?        S    15:39   0:00 sh -c (cp '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh' '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh.copy'; { while [ -d '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16' -a \! -f '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt' ]; do touch '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-log.txt'; sleep 3; done } & jsc=durable-739a43fcd84ca8f9371c476964ed89c3addc02563b716b8717ae975290701aba; JENKINS_SERVER_COOKIE=$jsc 'sh' -xe  '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh.copy' > '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-log.txt' 2>&1; echo $? > '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt.tmp'; mv '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt.tmp' '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt'; wait) >&- 2>&- &
+jenkins  29703  0.0  0.0   2576   112 ?        S    15:39   0:00 sh -c (cp '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh' '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh.copy'; { while [ -d '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16' -a \! -f '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt' ]; do touch '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-log.txt'; sleep 3; done } & jsc=durable-739a43fcd84ca8f9371c476964ed89c3addc02563b716b8717ae975290701aba; JENKINS_SERVER_COOKIE=$jsc 'sh' -xe  '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/script.sh.copy' > '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-log.txt' 2>&1; echo $? > '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt.tmp'; mv '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt.tmp' '/var/jenkins_home/workspace/TermProjectDevOps@2@tmp/durable-7b67ac16/jenkins-result.txt'; wait) >&- 2>&- &
+
+Memory usage:
+               total        used        free      shared  buff/cache   available
+Mem:           7.4Gi       3.1Gi       3.5Gi       4.1Mi       1.1Gi       4.3Gi
+Swap:          2.0Gi       268Ki       2.0Gi
+
+System performance stats (vmstat):
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 1  1    268 3644536  81752 1097348    0    0    11    43   86  283  1  0 99  0  0
+ 1  0    268 3644536  81752 1097348    0    0     0    96 3792 11681  1  1 98  0  0
+ 1  0    268 3644536  81752 1097348    0    0     0     0  584 2331  0  0 100  0  0
+ 1  0    268 3644536  81752 1097348    0    0     0     0  546 2014  0  0 99  0  0
+ 1  0    268 3644536  81752 1097348    0    0     0   108  240 1308  0  0 100  0  0
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] }
