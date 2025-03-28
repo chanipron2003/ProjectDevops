@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                     echo "🏗️ Building the project..."
-                    sh 'npm run build'
+                    sh 'npx react-scripts build'
                 }
             }
         }
