@@ -10,25 +10,42 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    echo "Checking out source code..."
+                    echo "📥 Checking out source code..."
                     checkout scm
+                    sh 'ls -la'  // เช็คว่าโค้ดถูกดึงมาแล้ว
                 }
             }
         }
 
         stage('Install Dependencies') {
             steps {
+                agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
                 script {
-                    echo "Installing dependencies..."
-                    sh 'npm install'
+                    echo "📦 Installing dependencies..."
+                    sh '''
+                    npm install
+                    npm install -g netlify-cli
+                    netlify --version  # ตรวจสอบว่า Netlify CLI ใช้งานได้
+                    '''
                 }
             }
         }
 
         stage('Build Project') {
             steps {
+                agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
                 script {
-                    echo "Building the project..."
+                    echo "🏗️ Building the project..."
                     sh 'npm run build'
                 }
             }
@@ -37,21 +54,36 @@ pipeline {
         stage('Check Build Directory') {
             steps {
                 script {
-                    echo "Checking if build directory exists..."
-                    sh 'ls -la dist/'
+                    echo "🔍 Checking if build directory exists..."
+                    sh '''
+                    if [ -d "dist" ]; then
+                        echo "✅ Build directory exists!"
+                        ls -la dist/
+                    else
+                        echo "❌ Build directory missing! Build might have failed."
+                        exit 1
+                    fi
+                    '''
                 }
             }
         }
 
         stage('Deploy to Netlify') {
             steps {
+                agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
                 script {
-                    echo "Deploying to Netlify..."
-                    sh '''
-                    npm install -g netlify-cli
-                    netlify deploy --prod --dir=dist \
-                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-                    '''
+                    echo "🚀 Deploying to Netlify..."
+                    withEnv(["NETLIFY_AUTH_TOKEN=${NETLIFY_AUTH_TOKEN}", "NETLIFY_SITE_ID=${NETLIFY_SITE_ID}"]) {
+                        sh '''
+                        netlify deploy --prod --dir=dist \
+                        --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+                        '''
+                    }
                 }
             }
         }
