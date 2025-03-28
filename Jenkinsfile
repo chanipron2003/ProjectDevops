@@ -70,32 +70,38 @@ pipeline {
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
       stage('Post Deploy') {
-        agent any
-            steps {
-                script {
-                    echo "🔍 Monitoring server resources during the test..."
-                
-                    // Run resource monitoring commands
-                    try {
-                        sh '''
-                            echo "Top 10 processes by memory usage:"
-                            ps aux --sort=-%mem | head -n 10
-                            
+    agent any
+    steps {
+        script {
+            echo "🔍 Monitoring server resources during the test..."
             
-                            echo "Memory usage:"
-                            free -h
-                            
-                            echo "System performance stats (vmstat):"
-                            vmstat 1 5
-                        '''
-                } 
-                    catch (e) {
-                        echo "Error monitoring server resources: ${e}"
-                }
+            // Run resource monitoring commands and save output
+            try {
+                sh '''
+                    echo "Top 10 processes by memory usage:" > resource_report.txt
+                    ps aux --sort=-%mem | head -n 10 >> resource_report.txt
+                    
+                    echo "\nMemory usage:" >> resource_report.txt
+                    free -h >> resource_report.txt
+                    
+                    echo "\nSystem performance stats (vmstat):" >> resource_report.txt
+                    vmstat 1 5 >> resource_report.txt
+                '''
+            } catch (e) {
+                echo "Error monitoring server resources: ${e}"
             }
         }
     }
-
+    post {
+        success {
+            echo "✅ Resource monitoring completed successfully! Here are the results:"
+            sh 'cat resource_report.txt'  // แสดงข้อมูลที่บันทึกไว้
+        }
+        failure {
+            echo "❌ Resource monitoring encountered an error!"
+        }
+    }
+}
 }
 
 }
