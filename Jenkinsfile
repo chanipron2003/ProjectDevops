@@ -89,10 +89,6 @@ pipeline {
                             # System performance
                             echo "System performance stats (vmstat):"
                             vmstat 1 5
-                            
-                            # CPU usage (sar requires sysstat to be installed)
-                            echo "CPU usage (sar):"
-                            sar -u 1 5 || echo "sar command not available on this system."
                         '''
                 } 
                     catch (e) {
