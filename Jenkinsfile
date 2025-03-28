@@ -63,8 +63,8 @@ pipeline {
        stage('Post Deploy') {
     agent {
         docker {
-            image 'node:lts'
-            args '--cap-add=SYS_ADMIN'
+           image 'femtopixel/google-lighthouse'
+           reuseNode true
         }
     }
     steps {
