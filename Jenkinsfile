@@ -12,7 +12,7 @@ pipeline {
                 script {
                     echo "📥 Checking out source code..."
                     checkout scm
-                    sh 'ls -la'  // เช็คว่าโค้ดถูกดึงมาแล้ว
+                    sh 'ls -la'  // ตรวจสอบว่าโค้ดถูกดึงมาแล้ว
                 }
             }
         }
@@ -27,10 +27,23 @@ pipeline {
             steps {
                 script {
                     echo "📦 Installing dependencies..."
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Check Dependencies') {
+            steps {
+                script {
+                    echo "🔍 Checking installed dependencies..."
                     sh '''
-                    npm install
-                    npm install netlify-cli  # ติดตั้ง Netlify CLI ใน Local Node Modules
-                    npx netlify --version  # ตรวจสอบว่า Netlify CLI ใช้งานได้
+                    if [ ! -d "node_modules" ]; then
+                        echo "⚠️ node_modules directory is missing! Running npm install..."
+                        npm install
+                    else
+                        echo "✅ node_modules exists!"
+                    fi
+                    ls -la node_modules/
                     '''
                 }
             }
@@ -51,23 +64,6 @@ pipeline {
             }
         }
 
-        stage('Check Build Directory') {
-            steps {
-                script {
-                    echo "🔍 Checking if build directory exists..."
-                    sh '''
-                    if [ -d "dist" ]; then
-                        echo "✅ Build directory exists!"
-                        ls -la dist/
-                    else
-                        echo "❌ Build directory missing! Build might have failed."
-                        exit 1
-                    fi
-                    '''
-                }
-            }
-        }
-
         stage('Deploy to Netlify') {
             agent {
                 docker {
@@ -78,15 +74,9 @@ pipeline {
             steps {
                 script {
                     echo "🚀 Deploying to Netlify..."
-
-                    // ตรวจสอบว่า Token และ Site ID ไม่ว่าง
-                    if (!NETLIFY_AUTH_TOKEN?.trim() || !NETLIFY_SITE_ID?.trim()) {
-                        error "❌ NETLIFY_AUTH_TOKEN หรือ NETLIFY_SITE_ID ว่างเปล่า!"
-                    }
-
                     sh '''
                     npx netlify deploy --prod --dir=dist \
-                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID --json
+                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
                 }
             }
