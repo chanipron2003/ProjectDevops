@@ -30,16 +30,19 @@ Clone the repository to your local machine:
 
 ```
 git clone https://github.com/NiceVani/TermProjectDevOps.git
-cd TermProjectDevOps
+```
+
 Install dependencies
 Run the following command to install all necessary dependencies:
-```
+
 
 ```
 npm install
+```
+
 Running the Application Locally
 To start the application locally, use the following command:
-```
+
 ```
 npm start
 This will launch the application on http://localhost:3000.
