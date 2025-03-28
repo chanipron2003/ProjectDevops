@@ -62,12 +62,20 @@ pipeline {
         // Post deploy actions, e.g., notify Slack, send emails, etc.
         stage('Post Deploy') {
             steps {
-                script {
-                    echo "📝 Post deploy actions"
-                    // ตัวอย่างการทำ post-deploy actions เช่น notify หรืออื่นๆ
-                    // sh 'curl -X POST -d "message=Deploy Completed" https://slack-webhook-url'
-                }
-            }
+        script {
+            echo "📊 Setting up Performance Monitoring..."
+
+            // ตัวอย่างการติดตั้ง agent สำหรับ monitoring เช่น New Relic, Datadog หรือ Prometheus
+            sh '''
+            # ติดตั้ง Monitoring Agent
+            curl -L https://example.com/install-monitoring-agent.sh | bash
+
+            # หรือการตั้งค่าเบื้องต้น เช่น ส่งข้อมูล metrics
+            echo "Sending initial performance metrics..."
+            '''
+        }
+    }
+
         }
     }
 
