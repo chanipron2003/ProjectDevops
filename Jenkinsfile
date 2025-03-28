@@ -57,24 +57,35 @@ pipeline {
         }
 
         // Deploy to Netlify
-        stage('Deploy to Netlify') {
+        stage('Install Puppeteer and Chromium') {
     agent {
         docker {
-            image 'puppeteer/puppeteer'
+            image 'node:18-alpine'
             reuseNode true
         }
     }
     steps {
         script {
-            echo "🚀 Deploying to Netlify and running Puppeteer..."
+            echo "📦 Installing Chromium and Puppeteer..."
             sh '''
-            npx netlify deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-            npx puppeteer --headless false --url https://nicevanitermproject.netlify.app
+            apk update
+            apk add --no-cache chromium
+            npm install puppeteer
+            node -e "const puppeteer = require('puppeteer'); (async () => { const browser = await puppeteer.launch(); const page = await browser.newPage(); await page.goto('https://nicevanitermproject.netlify.app'); await page.screenshot({path: 'screenshot.png'}); await browser.close(); })();"
             '''
         }
     }
-}
 
+
+            post {
+                success {
+                    echo "✅ Deployment Successful! 🎉"
+                }
+                failure {
+                    echo "❌ Deployment Failed! Check logs for details."
+                }
+            }
+        }
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
         stage('Post Deploy') {
