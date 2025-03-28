@@ -28,41 +28,34 @@ Before running the project locally, ensure that you have the following tools ins
 
 Clone the repository to your local machine:
 
-```bash
+```
 git clone https://github.com/NiceVani/TermProjectDevOps.git
 cd TermProjectDevOps
 Install dependencies
 Run the following command to install all necessary dependencies:
+```
 
-bash
-คัดลอก
-แก้ไข
+```
 npm install
 Running the Application Locally
 To start the application locally, use the following command:
-
-bash
-คัดลอก
-แก้ไข
+```
+```
 npm start
 This will launch the application on http://localhost:3000.
-
+```
 Running Tests
 To run the tests with Jest, use the following command:
-
-bash
-คัดลอก
-แก้ไข
+```
 npm test
 Deploying to Netlify
 Make sure you have the Netlify CLI installed.
-
+```
 Deploy the app to Netlify:
-
-bash
-คัดลอก
-แก้ไข
+```
 netlify deploy --prod
+```
+
 Follow the prompts to authenticate with your Netlify account and select your site.
 
 CI/CD Pipeline with Jenkins
@@ -88,9 +81,7 @@ Cumulative Layout Shift (CLS)
 This can be sent to an analytics service or logged for further analysis.
 
 Folder Structure
-php
-คัดลอก
-แก้ไข
+```
 TermProjectDevOps/
 │
 ├── public/              # Static files like index.html
@@ -105,7 +96,8 @@ TermProjectDevOps/
 ├── Jenkinsfile          # Jenkins pipeline configuration
 ├── package.json         # Dependencies and scripts
 └── README.md            # This file
-License
+```
+### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 Contributing
@@ -127,10 +119,6 @@ Acknowledgments
 Thanks to React, Node.js, and Netlify for the tools and services that make this project possible.
 
 Thanks to Jenkins for automating the CI/CD pipeline.
-
-markdown
-คัดลอก
-แก้ไข
 
 ### อธิบายเนื้อหาใน README
 
