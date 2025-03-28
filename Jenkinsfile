@@ -62,29 +62,24 @@ pipeline {
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
        stage('Post Deploy') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                script {
-                    echo "🔒 Scanning for vulnerabilities..."
-                    sh 'npm audit --production'  // ตรวจสอบช่องโหว่ของ production dependencies
-                }
-            }
+           agent any
+    steps {
+        script {
+            echo "🔍 Monitoring server resources during the test..."
+            sh 'top -n 1'
         }
+    }
+}
 
 
     }
 
-    post {
-        success {
-            echo "✅ Deployment Successful! 🎉"
-        }
-        failure {
-            echo "❌ Deployment Failed! Check logs for details."
-        }
-    }
+    // post {
+    //     success {
+    //         echo "✅ Deployment Successful! 🎉"
+    //     }
+    //     failure {
+    //         echo "❌ Deployment Failed! Check logs for details."
+    //     }
+    // }
 }
