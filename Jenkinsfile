@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+        // Checkout the code
         stage('Checkout Code') {
             steps {
                 script {
@@ -17,6 +18,7 @@ pipeline {
             }
         }
 
+        // Install dependencies
         stage('Install Dependencies') {
             agent {
                 docker {
@@ -32,6 +34,7 @@ pipeline {
             }
         }
 
+        // Check if dependencies are installed
         stage('Check Dependencies') {
             steps {
                 script {
@@ -49,7 +52,8 @@ pipeline {
             }
         }
 
-        stage('Build Project') {
+        // Build the project
+        stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -64,6 +68,17 @@ pipeline {
             }
         }
 
+        // Run tests (if applicable)
+        stage('Test') {
+            steps {
+                script {
+                    echo "🔬 Running tests..."
+                    sh 'npm test'  // ปรับคำสั่งให้เป็นคำสั่งที่ใช้ทดสอบโปรเจคของคุณ
+                }
+            }
+        }
+
+        // Deploy to Netlify
         stage('Deploy to Netlify') {
             agent {
                 docker {
@@ -78,6 +93,17 @@ pipeline {
                     npx netlify deploy --prod --dir=build \
                     --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
+                }
+            }
+        }
+
+        // Post deploy actions, e.g., notify Slack, send emails, etc.
+        stage('Post Deploy') {
+            steps {
+                script {
+                    echo "📝 Post deploy actions"
+                    // ตัวอย่างการทำ post-deploy actions เช่น notify หรืออื่นๆ
+                    // sh 'curl -X POST -d "message=Deploy Completed" https://slack-webhook-url'
                 }
             }
         }
