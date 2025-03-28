@@ -7,52 +7,6 @@ pipeline {
     }
 
      stages {
-    //     // Checkout the code
-    //     stage('Checkout Code') {
-    //         steps {
-    //             script {
-    //                 echo "📥 Checking out source code..."
-    //                 checkout scm
-    //                 sh 'ls -la'  // ตรวจสอบว่าโค้ดถูกดึงมาแล้ว
-    //             }
-    //         }
-    //     }
-
-    //     // Install dependencies
-    //     stage('Install Dependencies') {
-    //         agent {
-    //             docker {
-    //                 image 'node:18-alpine'
-    //                 reuseNode true
-    //             }
-    //         }
-    //         steps {
-    //             script {
-    //                 echo "📦 Installing dependencies..."
-    //                 sh 'npm install'
-    //             }
-    //         }
-    //     }
-
-    //     // Check if dependencies are installed
-    //     stage('Check Dependencies') {
-    //         steps {
-    //             script {
-    //                 echo "🔍 Checking installed dependencies..."
-    //                 sh '''
-    //                 if [ ! -d "node_modules" ]; then
-    //                     echo "⚠️ node_modules directory is missing! Running npm install..."
-    //                     npm install
-    //                 else
-    //                     echo "✅ node_modules exists!"
-    //                 fi
-    //                 ls -la node_modules/
-    //                 '''
-    //             }
-    //         }
-    //     }
-
-        // Build the project
         stage('Build') {
             agent {
                 docker {
