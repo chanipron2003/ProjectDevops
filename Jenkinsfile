@@ -60,24 +60,24 @@ pipeline {
         }
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
-        stage('Post Deploy') {
-             agent {
-                docker {
-                    image 'femtopixel/google-lighthouse'
-                    reuseNode true
-                }
-            }
-             steps {
-                script {
-                    echo "⚡ Running Lighthouse Audit..."
-                    sh '''
-                    npx lighthouse https://nicevanitermproject.netlify.app/ --output=json --output-path=./lighthouse-report.json
-                    '''
-                }
-            }
-
+stage('Post Deploy') {
+    agent {
+        docker {
+            image 'node:lts'
+            args '--cap-add=SYS_ADMIN'
         }
     }
+    steps {
+        script {
+            echo "⚡ Running Lighthouse CI..."
+            sh '''
+            npm install -g @lhci/cli
+            lhci autorun --collect.url=https://nicevanitermproject.netlify.app/
+            '''
+        }
+    }
+}
+
 
     post {
         success {
