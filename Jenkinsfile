@@ -63,12 +63,18 @@ pipeline {
        stage('Post Deploy') {
     agent {
         docker {
-           image 'femtopixel/google-lighthouse'
-           reuseNode true
+            image 'node:18-alpine'
+            args '--cap-add=SYS_ADMIN'
         }
     }
     steps {
         script {
+            echo "⚡ Installing Chrome..."
+            sh '''
+            apk add --no-cache chromium
+            export CHROME_PATH=/usr/bin/chromium-browser
+            '''
+            
             echo "⚡ Running Lighthouse CI with NPX..."
             sh '''
             npx @lhci/cli autorun --collect.url=https://nicevanitermproject.netlify.app/
