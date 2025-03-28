@@ -70,6 +70,12 @@ pipeline {
 
         // Run tests (if applicable)
         stage('Test') {
+             agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
                 script {
                     echo "🔬 Running tests..."
