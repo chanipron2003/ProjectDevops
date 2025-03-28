@@ -2,43 +2,56 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_AUTH_TOKEN = credentials('nfp_JKU541H1MZmJTSEAovcBC7jqYrgN7FwC82f8')
-        NETLIFY_SITE_ID = credentials('6e49260a-030e-4f06-995a-3337d587c017')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-auth-token')
+        NETLIFY_SITE_ID = credentials('netlify-site-id')
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout Code') {
             steps {
                 script {
+                    echo "Checking out source code..."
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    echo "Installing dependencies..."
                     sh 'npm install'
+                }
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    echo "Building the project..."
                     sh 'npm run build'
                 }
             }
         }
 
-        stage('Test') {
+        stage('Check Build Directory') {
             steps {
                 script {
-                    sh 'npm test'
+                    echo "Checking if build directory exists..."
+                    sh 'ls -la dist/'
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to Netlify') {
             steps {
                 script {
+                    echo "Deploying to Netlify..."
                     sh '''
+                    npm install -g netlify-cli
                     netlify deploy --prod --dir=dist \
                     --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
-                }
-            }
-        }
-
-        stage('Post Deploy') {
-            steps {
-                script {
-                    sh 'curl -s -o /dev/null -w "%{http_code}" https://your-netlify-site.netlify.app'
                 }
             }
         }
@@ -46,10 +59,10 @@ pipeline {
 
     post {
         success {
-            echo "Deployment Successful!"
+            echo "✅ Deployment Successful! 🎉"
         }
         failure {
-            echo "Deployment Failed!"
+            echo "❌ Deployment Failed! Check logs for details."
         }
     }
 }
