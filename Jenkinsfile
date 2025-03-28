@@ -6,7 +6,7 @@ pipeline {
         NETLIFY_SITE_ID = credentials('netlify-site-id')
     }
 
-     stages {
+    stages {
         stage('Build') {
             agent {
                 docker {
@@ -62,21 +62,19 @@ pipeline {
 
         // Post deploy actions, e.g., notify Slack, send emails, etc.
        stage('Post Deploy') {
-    agent {
-        docker {
-            image 'femtopixel/google-lighthouse'
-            reuseNode true
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                script {
+                    echo "🔒 Scanning for vulnerabilities..."
+                    sh 'npm audit --production'  // ตรวจสอบช่องโหว่ของ production dependencies
+                }
+            }
         }
-    }
-    steps {
-        script {
-            echo "⚡ Running Lighthouse CI with NPX..."
-            sh '''
-            npx @lhci/cli autorun --collect.url=https://nicevanitermproject.netlify.app/
-            '''
-        }
-    }
-}
 
 
     }
