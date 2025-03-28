@@ -18,13 +18,13 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            steps {
-                agent {
+            agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
+            steps {
                 script {
                     echo "📦 Installing dependencies..."
                     sh '''
@@ -37,13 +37,13 @@ pipeline {
         }
 
         stage('Build Project') {
-            steps {
-                agent {
+            agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
+            steps {
                 script {
                     echo "🏗️ Building the project..."
                     sh 'npm run build'
@@ -69,13 +69,13 @@ pipeline {
         }
 
         stage('Deploy to Netlify') {
-            steps {
-                agent {
+            agent {
                 docker {
                     image 'node:18-alpine'
                     reuseNode true
                 }
             }
+            steps {
                 script {
                     echo "🚀 Deploying to Netlify..."
                     withEnv(["NETLIFY_AUTH_TOKEN=${NETLIFY_AUTH_TOKEN}", "NETLIFY_SITE_ID=${NETLIFY_SITE_ID}"]) {
