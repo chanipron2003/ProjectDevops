@@ -29,8 +29,8 @@ pipeline {
                     echo "📦 Installing dependencies..."
                     sh '''
                     npm install
-                    npm install -g netlify-cli
-                    netlify --version  # ตรวจสอบว่า Netlify CLI ใช้งานได้
+                    npm install netlify-cli  # ติดตั้ง Netlify CLI ใน Local Node Modules
+                    npx netlify --version  # ตรวจสอบว่า Netlify CLI ใช้งานได้
                     '''
                 }
             }
@@ -78,12 +78,16 @@ pipeline {
             steps {
                 script {
                     echo "🚀 Deploying to Netlify..."
-                    withEnv(["NETLIFY_AUTH_TOKEN=${NETLIFY_AUTH_TOKEN}", "NETLIFY_SITE_ID=${NETLIFY_SITE_ID}"]) {
-                        sh '''
-                        netlify deploy --prod --dir=dist \
-                        --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
-                        '''
+
+                    // ตรวจสอบว่า Token และ Site ID ไม่ว่าง
+                    if (!NETLIFY_AUTH_TOKEN?.trim() || !NETLIFY_SITE_ID?.trim()) {
+                        error "❌ NETLIFY_AUTH_TOKEN หรือ NETLIFY_SITE_ID ว่างเปล่า!"
                     }
+
+                    sh '''
+                    npx netlify deploy --prod --dir=dist \
+                    --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID --json
+                    '''
                 }
             }
         }
